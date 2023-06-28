@@ -1,4 +1,5 @@
 import { NumberRules } from "../rules/numberRules.js";
+import { ObjectRules } from "../rules/objectRules.js";
 import { StringRules } from "../rules/stringRules.js";
 
 
@@ -19,10 +20,10 @@ export class Validation {
         return new StringRules(val);
       case 'number':
         return new NumberRules(val);
-      case 'array':
-        throw new Error('YOUR VALUE IS ARRAY');
+      // case 'array':
+      //   throw new Error('YOUR VALUE IS ARRAY');
       case 'object':
-        throw new Error('YOUR VALUE IS OBJECT');
+        return new ObjectRules(val);
 
       default:
         throw new Error('Error');
