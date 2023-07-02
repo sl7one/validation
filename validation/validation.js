@@ -1,32 +1,31 @@
-import { NumberRules } from "../rules/numberRules.js";
-import { ObjectRules } from "../rules/objectRules.js";
-import { StringRules } from "../rules/stringRules.js";
+import { isNotANumber, isNotAObject, isNotAString } from "../errors/errorFunc.js";
+import { errorMessagesServise } from "../errors/errorMessagesServise.js";
+import { NumberMethods } from "../methods/numberMethods.js";
+import { ObjectMethods } from "../methods/objectMethods.js";
+import { StringMethods } from "../methods/stringMethods.js";
 
 
 export class Validation {
-  val(val) {
-    // if (val === null) throw new Error('YOUR VALUE IS NULL');
-    // if (typeof val === 'undefined') throw new Error('YOUR VALUE IS UNDEFINED');
 
-    // let type = null;
 
-    
-    // if (typeof val === 'number') type = 'number';
-    // if (val instanceof Object) type = 'object';
-    // if (Array.isArray(val)) type = 'array';
-
-    switch (typeof val) {
-      case 'string':
-        return new StringRules(val);
-      case 'number':
-        return new NumberRules(val);
-      // case 'array':
-      //   throw new Error('YOUR VALUE IS ARRAY');
-      case 'object':
-        return new ObjectRules(val);
-
-      default:
-        throw new Error('Error');
-    }
+  str(val, options){
+    if(isNotAString(val)) throw new Error(errorMessagesServise['isNotAString'](val))
+    if(isNotAObject(options)) throw new Error(errorMessagesServise['isNotAObject'](options))
+    return new StringMethods(val, options);
   }
+
+  nmbr(val, options){
+    if (isNaN(val) && typeof val !== "string") throw new Error(errorMessagesServise['isNaN'](val));
+    if(isNotANumber(val)) throw new Error(errorMessagesServise['isNotANumber'](val))
+    if(isNotAObject(options)) throw new Error(errorMessagesServise['isNotAObject'](options))
+    return new NumberMethods(val, options);
+  }
+
+  obj(val, options){
+    if(isNotAObject(val)) throw new Error(errorMessagesServise['isNotAObject'](val))
+    if(isNotAObject(options)) throw new Error(errorMessagesServise['isNotAObject'](options))
+
+    return new ObjectMethods(val, options);
+  }
+
 }
