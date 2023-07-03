@@ -1,8 +1,7 @@
-import { isNotAObject, isNotAString } from '../errors/errorFunc.js';
+import { isNotAObject, } from '../errors/errorFunc.js';
 import { errorHandler } from '../errors/errorHandler.js';
 import { errorMessagesServise } from '../errors/errorMessagesServise.js';
 import { isModelFunc } from '../functions/object/isModelFunc.js';
-import { validateFields } from '../functions/object/validateFields.js';
 import { argsServise } from '../functions/servise/argsServise.js';
 
 class ObjectMethods {

@@ -11,6 +11,9 @@ const obj = {
     age: 25,
 };
 
+const resStr = validate.str(obj.firtsName,{min: 5, max: 8});
+console.log(resStr);
+
 
 
 // const resNmbrs = validate.nmbr(obj.age, {
