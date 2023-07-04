@@ -10,10 +10,6 @@ const isNotAObject = (val) => {
     return Object.keys(val).length === 0 ? true : false;
 };
 
-const isNotTrue = (val = true) => {
-    return val.toString() !== 'true' ? true : false;
-};
-
 const isArray = (val) => {
     return Array.isArray(val);
 };
@@ -25,7 +21,6 @@ const isNotAPattern = (val) => {
     } catch (error) {
         return new Error();
     }
-     
 };
 
-export { isNotANumber, isNotAString, isNotTrue, isNotAObject, isNotAPattern, isArray };
+export { isNotANumber, isNotAString, isNotAObject, isNotAPattern, isArray };

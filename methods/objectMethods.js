@@ -1,4 +1,4 @@
-import { isNotAObject, } from '../errors/errorFunc.js';
+import { isNotAObject } from '../errors/errorFunc.js';
 import { errorHandler } from '../errors/errorHandler.js';
 import { errorMessagesServise } from '../errors/errorMessagesServise.js';
 import { isModelFunc } from '../functions/object/isModelFunc.js';
@@ -23,16 +23,23 @@ class ObjectMethods {
 
     isModel = (...args) => {
         const { param, userErrorMessage } = argsServise(args);
-        return errorHandler({
+        errorHandler({
             param,
             userErrorMessage,
-            func: isModelFunc.bind(this),
             validateParamFunc: isNotAObject,
             validateUserErrorMessageFunc: isNotAObject,
             errorMessageParamFunc: errorMessagesServise['isNotAObject'](param),
             errorMessageUserErrorMessage:
                 errorMessagesServise['isNotAObject'](userErrorMessage),
         });
+
+        const res = isModelFunc({ value: this.val, param,  userErrorMessage});
+
+        res
+            ? this.truthy('isModel')
+            : this.falsy({
+                  ...res,
+              });
     };
 
     truthy(key) {
@@ -53,13 +60,10 @@ class ObjectMethods {
 
     result(options) {
         const isValidModel = Object.values(this.log).every((log) => log === 'succsess');
-        const isValidFields = Object.values(options).every(({log}) => 
-             Object.values(log).every((log)=> log === "succsess")
+        const isValidFields = Object.values(options).every(({ log }) =>
+            Object.values(log).every((log) => log === 'succsess')
         );
-        if (
-            !isValidModel ||
-            !isValidFields
-        ) {
+        if (!isValidModel || !isValidFields) {
             this.isValid = false;
             return { isValid: this.isValid, log: { ...this.log, fields: options } };
         } else {

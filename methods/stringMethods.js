@@ -34,41 +34,67 @@ class StringMethods {
 
     min = (...args) => {
         const { param, userErrorMessage } = argsServise(args);
-        return errorHandler({
+        errorHandler({
             param,
             userErrorMessage,
-            func: minFunc.bind(this),
             validateParamFunc: isNotANumber,
             validateUserErrorMessageFunc: isNotAString,
             errorMessageParamFunc: errorMessagesServise['isNotANumber'](param),
-            errorMessageUserErrorMessage: errorMessagesServise['isNotAString'](userErrorMessage),
+            errorMessageUserErrorMessage:
+                errorMessagesServise['isNotAString'](userErrorMessage),
         });
+
+        const res = minFunc({ value: this.val, param });
+
+        res
+            ? this.truthy('min')
+            : this.falsy({
+                  min:
+                      userErrorMessage || errorMessagesServise['minStr'](this.val, param),
+              });
     };
 
     max = (...args) => {
         const { param, userErrorMessage } = argsServise(args);
-        return errorHandler({
+        errorHandler({
             param,
             userErrorMessage,
-            func: maxFunc.bind(this),
             validateParamFunc: isNotANumber,
             validateUserErrorMessageFunc: isNotAString,
             errorMessageParamFunc: errorMessagesServise['isNotANumber'](param),
-            errorMessageUserErrorMessage: errorMessagesServise['isNotAString'](userErrorMessage),
+            errorMessageUserErrorMessage:
+                errorMessagesServise['isNotAString'](userErrorMessage),
         });
+
+        const res = maxFunc({ value: this.val, param });
+
+        res
+            ? this.truthy('max')
+            : this.falsy({
+                  ['max']:
+                      userErrorMessage || errorMessagesServise['maxStr'](this.val, param),
+              });
     };
 
     pattern = (...args) => {
         const { param, userErrorMessage } = argsServise(args);
-        return errorHandler({
+        errorHandler({
             param,
             userErrorMessage,
-            func: patternFunc.bind(this),
             validateParamFunc: () => false,
             validateUserErrorMessageFunc: isNotAString,
             errorMessageParamFunc: errorMessagesServise['isNotANumber'](param),
-            errorMessageUserErrorMessage: errorMessagesServise['isNotAString'](userErrorMessage),
+            errorMessageUserErrorMessage:
+                errorMessagesServise['isNotAString'](userErrorMessage),
         });
+
+        const res = patternFunc({ value: this.val, param });
+
+        res
+            ? this.truthy('pattern')
+            : this.falsy({
+                  pattern: userErrorMessage || errorMessagesServise['pattern'],
+              });
     };
 
     truthy(key) {

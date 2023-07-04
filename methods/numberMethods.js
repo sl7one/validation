@@ -2,9 +2,9 @@ import { errorHandler } from '../errors/errorHandler.js';
 import { isNotANumber, isNotAString } from '../errors/errorFunc.js';
 import { isEqualFunc } from '../functions/number/isEqualFunc.js';
 import { maxFunc } from '../functions/number/maxFunc.js';
-import { minFunc } from '../functions/number/minFunc.js';
 import { errorMessagesServise } from '../errors/errorMessagesServise.js';
 import { argsServise } from '../functions/servise/argsServise.js';
+import { minFunc } from '../functions/number/minFunc.js';
 
 class NumberMethods {
     val = null;
@@ -14,7 +14,6 @@ class NumberMethods {
     constructor(val, options) {
         return this.options(val, options);
     }
-
 
     options = (...args) => {
         const [value, options] = args;
@@ -35,41 +34,73 @@ class NumberMethods {
 
     min = (...args) => {
         const { param, userErrorMessage } = argsServise(args);
-        return errorHandler({
+        errorHandler({
             param,
             userErrorMessage,
-            func: minFunc.bind(this),
             validateParamFunc: isNotANumber,
             validateUserErrorMessageFunc: isNotAString,
             errorMessageParamFunc: errorMessagesServise['isNotANumber'](param),
-            errorMessageUserErrorMessage: errorMessagesServise['isNotAString'](userErrorMessage),
+            errorMessageUserErrorMessage:
+                errorMessagesServise['isNotAString'](userErrorMessage),
         });
+        const res = minFunc({
+            value: this.val,
+            param,
+        });
+
+        res
+            ? this.truthy('min')
+            : this.falsy({
+                  min:
+                      userErrorMessage ||
+                      errorMessagesServise['minNmbr'](this.val, param),
+              });
     };
 
     max = (...args) => {
         const { param, userErrorMessage } = argsServise(args);
-        return errorHandler({
+        errorHandler({
             param,
             userErrorMessage,
             func: maxFunc.bind(this),
             validateParamFunc: isNotANumber,
             validateUserErrorMessageFunc: isNotAString,
             errorMessageParamFunc: errorMessagesServise['isNotANumber'](param),
-            errorMessageUserErrorMessage: errorMessagesServise['isNotAString'](userErrorMessage),
+            errorMessageUserErrorMessage:
+                errorMessagesServise['isNotAString'](userErrorMessage),
         });
+
+        const res = maxFunc({ value: this.val, param });
+
+        res
+            ? this.truthy('max')
+            : this.falsy({
+                  ['max']:
+                      userErrorMessage ||
+                      errorMessagesServise['maxNmbr'](this.val, param),
+              });
     };
 
     isEqual = (...args) => {
         const { param, userErrorMessage } = argsServise(args);
-        return errorHandler({
+         errorHandler({
             param,
             userErrorMessage,
             func: isEqualFunc.bind(this),
             validateParamFunc: isNotANumber,
             validateUserErrorMessageFunc: isNotAString,
             errorMessageParamFunc: errorMessagesServise['isNotANumber'](param),
-            errorMessageUserErrorMessage: errorMessagesServise['isNotAString'](userErrorMessage),
+            errorMessageUserErrorMessage:
+                errorMessagesServise['isNotAString'](userErrorMessage),
         });
+
+        const res = isEqualFunc({ value: this.val, param })
+
+        res
+            ? this.truthy('isEqual')
+            : this.falsy({
+                isEqual: userErrorMessage || errorMessagesServise['isEqual'](this.val, param),
+            });
     };
 
     truthy(key) {

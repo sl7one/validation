@@ -1,14 +1,5 @@
-import { errorMessagesServise } from "../../errors/errorMessagesServise.js";
-
-function maxFunc(param, errMessage) {
-  if (this.val > param) {
-    this.falsy({
-      ['max']: errMessage || errorMessagesServise["maxNmbr"](this.val, param),
-  });
-return this.result();
-  } else {
-    this.truthy("max");
-  }
+function maxFunc({ value, param }) {
+    return value < param ? true : false;
 }
 
-export {maxFunc}
+export { maxFunc };
